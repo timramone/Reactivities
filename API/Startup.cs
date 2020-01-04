@@ -12,6 +12,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Persistance;
 using Microsoft.EntityFrameworkCore;
+using MediatR;
+using Application.Activities;
 
 namespace API
 {
@@ -35,6 +37,7 @@ namespace API
                     .AllowAnyMethod()
                     .WithOrigins("http://localhost:3000");
             }));
+            services.AddMediatR(typeof(List.Handler).Assembly);
             services.AddDbContext<DataContext>(opt =>
             {
                 opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
