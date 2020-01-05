@@ -1,18 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Card, Image, Button } from "semantic-ui-react";
-import { IActivity } from "../../app/models/activitiy";
+import ActivityStore from "../../app/stores/activityStore";
 
-interface Props {
-  selectedActivity: IActivity;
-  setSelectedActivity: (activity: IActivity | null) => void;
-  setEditMode: (editMode: boolean) => void;
-}
-
-const ActivityDetails: React.FC<Props> = ({
-  selectedActivity,
-  setEditMode,
-  setSelectedActivity
-}) => {
+const ActivityDetails: React.FC = () => {
+  const activityStore = useContext(ActivityStore);
+  const {
+    selectedActivity: activitiy,
+    openEditForm,
+    cancelSelectedActivity
+  } = activityStore;
+  const selectedActivity = activitiy!;
   return (
     <Card>
       <Image
@@ -33,10 +30,10 @@ const ActivityDetails: React.FC<Props> = ({
             basic
             color="blue"
             content="Edit"
-            onClick={() => setEditMode(true)}
+            onClick={() => openEditForm(activitiy!.id)}
           />
           <Button
-            onClick={() => setSelectedActivity(null)}
+            onClick={cancelSelectedActivity}
             basic
             color="grey"
             content="Cancel"
