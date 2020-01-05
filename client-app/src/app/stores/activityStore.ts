@@ -2,6 +2,7 @@ import { observable, action, computed, configure, runInAction } from "mobx";
 import { createContext, SyntheticEvent } from "react";
 import { IActivity } from "../models/activitiy";
 import agent from "../api/agent";
+import * as _ from "lodash";
 
 configure({
   enforceActions: "always"
@@ -15,9 +16,15 @@ class ActivityStore {
   @observable target = "";
 
   @computed get activitiesByDate() {
-    return Array.from(this.activityRegistry.values()).sort(
-      (a, b) => Date.parse(a.date) - Date.parse(b.date)
+    const result = this.groupActivitiesByDate(
+      Array.from(this.activityRegistry.values())
     );
+
+    return Object.entries(result);
+  }
+
+  groupActivitiesByDate(activities: IActivity[]) {
+    return _.groupBy(activities, a => a.date.split("T")[0]);
   }
 
   @action loadActivities = async () => {
