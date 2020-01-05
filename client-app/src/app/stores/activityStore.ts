@@ -136,10 +136,6 @@ class ActivityStore {
   @action cancelSelectedActivity = () => {
     this.activity = null;
   };
-
-  @action selectActivity = (id: string) => {
-    this.activity = this.activityRegistry.get(id);
-  };
 }
 
 export default createContext(new ActivityStore());
