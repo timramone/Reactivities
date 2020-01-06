@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Exceptions;
 using MediatR;
 using Persistance;
 
@@ -26,7 +27,9 @@ namespace Application.Activities
             {
                 var activity = await dataContext.Activities.FindAsync(request.Id);
                 if (activity == null)
-                    throw new Exception("Could not find activity");
+                    throw new HandlerUserException(
+                        HandlerUserException.ErrorReason.NotFound,
+                        "Could not find activity");
 
                 dataContext.Activities.Remove(activity);
 

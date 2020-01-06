@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Exceptions;
 using Domain;
 using MediatR;
 using Persistance;
@@ -26,6 +27,11 @@ namespace Application.Activities
             public async Task<Activity> Handle(Query request, CancellationToken cancellationToken)
             {
                 var activity = await context.Activities.FindAsync(request.Id);
+                if (activity == null)
+                    throw new HandlerUserException(
+                        HandlerUserException.ErrorReason.NotFound,
+                        "Could not find activity");
+
                 return activity;
             }
         }
